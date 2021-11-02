@@ -3,5 +3,8 @@
   "version": "1.0.0",
   "dependencies": {
     "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "joi": "^17.4.2"
   }
 }
