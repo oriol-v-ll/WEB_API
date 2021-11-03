@@ -20,6 +20,7 @@ app.use(express['static'](__dirname));
 
 //Enviament d'una sola dada al servidor per a treballar amb ells.
 app.post('/api/enviar', function (req, res) {
+    console.log(req.body);
     if (!req.body.Temperatura || req.body.Temperatura > 50){
         //400 Bad request
         res.status(400).send("La temperatura no pot passar els 50 graus!");
@@ -33,7 +34,6 @@ app.post('/api/enviar', function (req, res) {
     };
     inputs.push(dades_raspberry);
     console.log(dades_raspberry);
-    console.log(inputs);
     let json_guardar = JSON.stringify(inputs);
     fs.writeFileSync('data.json',json_guardar);
     res.status(200).send("YES!")
@@ -65,6 +65,7 @@ app.get('*', function (req, res) {
  * PETICIONS DELETE A LA API
  * ----------------------
  */
+
 
 // Express route to handle errors
 app.use(function (err, req, res, next) {
