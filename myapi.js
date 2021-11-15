@@ -39,6 +39,22 @@ app.post('/api/enviar', function (req, res) {
     res.status(200).send("YES!")
 });
 
+app.post('/api/enviarTot', function (req,res){
+    console.log(req.body);
+    if (!req.body.full){
+        //400 Bad request
+        res.status(400).send("Has d'enviar dades!!!");
+        return;
+    }
+
+    //S'ha de processar la longitud del fitxer
+
+    inputs.push(req.body.full);
+    let json_guardar = JSON.stringify(inputs);
+    fs.writeFileSync('data.json',json_guardar);
+    res.status(200).send("YES!")
+
+});
 
 /**
  * ----------------------
