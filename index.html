@@ -1,6 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="stylesheet" type="text/css" href="indexcss.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+          integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+          crossorigin=""/>
+    <!-- Make sure you put this AFTER Leaflet's CSS -->
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+            integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+            crossorigin=""></script>
+
     <meta charset="utf-8" />
     <title>Dades del sensor de temperatura i humitat</title>
     <script src="http://code.jquery.com/jquery-latest.js"></script>
@@ -8,6 +17,14 @@
 </head>
 <body>
 <H1>Temperatura i humitat Lab 135</H1>
+<br>
 <div id="input"></div>
+<br>
+<H1>Proves de mapa amb OSM i Leaflet</H1>
+<br>
+<div id="map"></div>
+
+
+
 </body>
 </html>

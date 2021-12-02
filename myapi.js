@@ -12,6 +12,7 @@ var inputs = require('./data.json');
 
 
 app.use(express['static'](__dirname));
+
 /**
  * ----------------------
  * PETICIONS POST A LA API
@@ -81,8 +82,6 @@ app.get('*', function (req, res) {
  * PETICIONS DELETE A LA API
  * ----------------------
  */
-
-
 // Express route to handle errors
 app.use(function (err, req, res, next) {
     if (req.xhr) {
