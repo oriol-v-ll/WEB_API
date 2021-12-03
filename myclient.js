@@ -1,7 +1,10 @@
 //Codi del client per a treballar amb la API.
 //Autor: Oriol Villanova Llorens
 
+
+
 window.onload = function () {
+
 var url, i, json;
 url = document.URL + 'inputs/';
 console.log(url);
@@ -14,12 +17,11 @@ json = $.getJSON(url,function (data){
             data[i]['Humitat'] + ' El dia:  ' + data[i]['Data'] +' '+ data[i]['Hora'] + '</p>');
 
     }
-
     //Implementació del mapa dins de la web.
     openStreetMap();
 
 });
-console.log(json);
+
 };
 
 document.addEventListener('DOMContentLoaded',function(){
@@ -64,25 +66,47 @@ function openStreetMap(){
     var marker = L.marker([41.131587, 1.241852]).addTo(map);
     marker.bindPopup("<b>ACTUA HQ</b><br>Campus sescelades").openPopup();
 
-    var color = '#59ff00'
-    var i = getRandomInt(1, 3)
-    console.log(i)
-    if (i==1){
-        color = '#59ff00'
-    }else{
-        color = '#ff0000'
-    }
-    //Cercle en un mapa:
-    var circle = L.circle([41.119722, 1.260556], {
-        color: color,
-        fillColor: color, //#f03
-        fillOpacity: 1,
-        radius: 40
-    }).addTo(map);
-    circle.bindPopup("<b>Rectorat URV</b><br>Tarragona").openPopup();
+
+    //Conseguim els estats
+    var urlEstats = document.URL + 'estat';
+    json = $.getJSON(urlEstats,function (urlEstats){
+        var length, hora;
+        length = Object.keys(urlEstats).length;
+        console.log(urlEstats[2]);
+        console.log(length);
+        hora = urlEstats['Hora'];
+        console.log(hora)
+        var   data = urlEstats['Data']
+        var hora_estat = data + ' ' + hora;
+        var hora_comparat = new Date(hora_estat);
+        var hoy = new Date();
+        var transcurso = hoy - hora_comparat; //temps en milisegons
+        console.log(transcurso);
+        //5 min son 300000 milisegons
+        var color
+        if (transcurso < 300000){
+            color = '#59ff00'
+            //El dispositiu està actiu
+        }else{
+            color = '#ff0000'
+            //El dispositiu no està actiu
+        }
+        //Cercle en un mapa:
+        var circle = L.circle([41.119722, 1.260556], {
+            color: color,
+            fillColor: color,
+            fillOpacity: 1,
+            radius: 40
+        }).addTo(map);
+        circle.bindPopup("<b>Rectorat URV</b><br>Tarragona").openPopup();
+
+    });
+
+
 };
 
 
 function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min)) + min;
 }
+
