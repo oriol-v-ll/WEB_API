@@ -43,7 +43,7 @@ app.post('/api/up', function (req, res) {
  * ----------------------
  */
 
-//Enviament d'una sola dada al servidor per a treballar amb ells.
+
 app.post('/api/enviar', function (req, res) {
     console.log(req.body);
     if (!req.body.Temperatura || req.body.Temperatura > 50){

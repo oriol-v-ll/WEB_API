@@ -2,7 +2,9 @@
 //Autor: Oriol Villanova Llorens
 
 
-
+/**
+ * Funció "main" del projecte que es la que s'executa quan es carrega la pàgina.
+ */
 window.onload = function () {
 
 var url, i, json;
@@ -28,7 +30,10 @@ document.addEventListener('DOMContentLoaded',function(){
     startLiveUpdate(); //També es pot ficar a la funcio onload
 });
 
-//Funció per actualitzar a temps real les dades que envia el sensor. S'ha de millorar fent que la API demani a ell
+/**
+ * En toeria aquesta funció treballa de manera dinàmica i hauria de actualitzar les dades ella mateixa
+ *
+ */
 function startLiveUpdate(){
     const temps = 30; //Temps en segons que s'actualitzara la pagina web
 
@@ -49,6 +54,10 @@ function startLiveUpdate(){
 
 };
 
+/**
+ * Carrega el mapa i busca els nodes que estan actius
+ *
+ */
 function openStreetMap(){
     //Implementació del mapa:
     var map = L.map('map').setView([41.119, 1.24], 14);
@@ -105,8 +114,26 @@ function openStreetMap(){
 
 };
 
-
+/**
+ * Retorna un numero enter entre el minim i el màxim indicat.
+ * @param min
+ * @param max
+ * @returns {*}
+ */
 function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min)) + min;
+}
+
+
+/**
+ * Funció per a consultar la base de dades entrant algun tipus de paràmetre
+ */
+function consultaBaseDades(){
+
+    // https://luisjordan.net/node-js/conectar-a-base-de-datos-con-node-js/
+    // S'han de fer funcions de busqueda
+    //TODO
+    //
+
 }
 
