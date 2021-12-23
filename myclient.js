@@ -79,17 +79,19 @@ function openStreetMap(){
     //Conseguim els estats
     var urlEstats = document.URL + 'estat';
     json = $.getJSON(urlEstats,function (urlEstats){
-        var length, hora;
+        var length, hora, data;
         length = Object.keys(urlEstats).length;
-        console.log(urlEstats[2]);
+        console.log(urlEstats);
         console.log(length);
         hora = urlEstats['Hora'];
         console.log(hora)
-        var   data = urlEstats['Data']
+        data = urlEstats['Data']
         var hora_estat = data + ' ' + hora;
         var hora_comparat = new Date(hora_estat);
+        console.log(hora_comparat);
         var hoy = new Date();
-        var transcurso = hoy - hora_comparat; //temps en milisegons
+        console.log(hoy);
+        var transcurso = hoy - hora_comparat ; //temps en milisegons
         console.log(transcurso);
         //5 min son 300000 milisegons
         var color

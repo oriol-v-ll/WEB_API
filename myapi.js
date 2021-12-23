@@ -15,8 +15,32 @@ var estat = require('./estat.json');
 app.use(express['static'](__dirname));
 
 /**
+ * Funció per a enviar les dades d'una raspberry pi
+ *
+ *
+ */
+app.post('/api/setup', function (req, res) {
+    console.log(req.body);
+
+    const estat_ficar =     {
+        "Lat": req.body.Lat,
+        "Lon": req.body.Lon,
+        "Data": req.body.Data,
+        "Hora": req.body.Hora,
+        "Nom": req.body.Nom
+    };
+
+    console.log(estat_ficar);
+    let json_guardar = JSON.stringify(estat_ficar);
+    fs.writeFileSync('estat.json',json_guardar);
+    res.status(200).send("YES!")
+});
+
+
+/**
  * ----------------
  * PETICIONS POST PER DEMOSTRAR QUE EL DISPOSITIU ESTA VIU
+ * Aquesta crida ha de ser de record i harà d'actualitzar la dada.
  *-----------------
  */
 app.post('/api/up', function (req, res) {
@@ -30,6 +54,7 @@ app.post('/api/up', function (req, res) {
         "Nom": req.body.Nom
     };
 
+    // Canviar per una actualització de dades.
     console.log(estat_ficar);
     let json_guardar = JSON.stringify(estat_ficar);
     fs.writeFileSync('estat.json',json_guardar);
