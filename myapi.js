@@ -15,7 +15,7 @@ var estat = require('./estat.json');
 app.use(express['static'](__dirname));
 
 /**
- * Funció per a enviar les dades d'una raspberry pi
+ * Funció per a enviar les dades inicials d'una raspberry
  *
  *
  */
@@ -29,36 +29,40 @@ app.post('/api/setup', function (req, res) {
         "Hora": req.body.Hora,
         "Nom": req.body.Nom
     };
-
+    estat.push(estat_ficar);
     console.log(estat_ficar);
-    let json_guardar = JSON.stringify(estat_ficar);
+    let json_guardar = JSON.stringify(estat);
     fs.writeFileSync('estat.json',json_guardar);
     res.status(200).send("YES!")
 });
 
 
 /**
- * ----------------
- * PETICIONS POST PER DEMOSTRAR QUE EL DISPOSITIU ESTA VIU
- * Aquesta crida ha de ser de record i harà d'actualitzar la dada.
- *-----------------
+ *
+ * Endpoint per enviar els batecs i anar actualitzant el json dels estats
  */
 app.post('/api/up', function (req, res) {
     console.log(req.body);
+    'use strict';
+    const fs = require('fs');
+    let rawdata = fs.readFileSync('estat.json');
+    let estat = JSON.parse(rawdata);
+    console.log(estat);
 
-    const estat_ficar =     {
-        "Lat": req.body.Lat,
-        "Lon": req.body.Lon,
-        "Data": req.body.Data,
-        "Hora": req.body.Hora,
-        "Nom": req.body.Nom
-    };
+       let len = Object.keys(estat).length
+         const nom =    req.body.Nom
+         for (let i = 0; i<len ; i++){
+             if (estat[i]['Nom']==nom){
+                 estat[i]['Hora']=req.body.Hora;
+                 estat[i]['Data']=req.body.Data;
+             }
+         }
 
-    // Canviar per una actualització de dades.
-    console.log(estat_ficar);
-    let json_guardar = JSON.stringify(estat_ficar);
-    fs.writeFileSync('estat.json',json_guardar);
-    res.status(200).send("YES!")
+        let json_guardar = JSON.stringify(estat);
+         fs.writeFileSync('estat.json',json_guardar);
+         res.status(200).send("YES!")
+
+
 });
 
 

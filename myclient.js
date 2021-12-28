@@ -81,9 +81,11 @@ function openStreetMap(){
     json = $.getJSON(urlEstats,function (urlEstats){
         var length, hora, data;
         length = Object.keys(urlEstats).length;
-        console.log(urlEstats);
+
         console.log(length);
         hora = urlEstats['Hora'];
+        urlEstats['Hora'] = 'patata';
+        console.log(urlEstats);
         console.log(hora)
         data = urlEstats['Data']
         var hora_estat = data + ' ' + hora;
