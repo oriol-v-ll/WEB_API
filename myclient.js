@@ -2,6 +2,8 @@
 //Autor: Oriol Villanova Llorens
 
 
+
+
 /**
  * Funció "main" del projecte que es la que s'executa quan es carrega la pàgina.
  */
@@ -19,46 +21,13 @@ json = $.getJSON(url,function (data){
             data[i]['Humitat'] + ' El dia:  ' + data[i]['Data'] +' '+ data[i]['Hora'] + '</p>');
 
     }
+});
+
+var url_estat = document.URL + 'estat/';
+json = $.getJSON(url_estat,function (estat){
+
+
     //Implementació del mapa dins de la web.
-    openStreetMap();
-
-});
-
-};
-
-document.addEventListener('DOMContentLoaded',function(){
-    startLiveUpdate(); //També es pot ficar a la funcio onload
-});
-
-/**
- * En toeria aquesta funció treballa de manera dinàmica i hauria de actualitzar les dades ella mateixa
- *
- */
-function startLiveUpdate(){
-    const temps = 30; //Temps en segons que s'actualitzara la pagina web
-
-    setInterval(function (){
-        //Cridar a la funció de la petició de dades
-        url = document.URL + 'inputs/';
-
-
-        //Convertir les dades a un objecte de javascript
-
-        //Processar les dades.
-
-
-        //renderitzar-les a la pantalla.
-
-
-    },2000);
-
-};
-
-/**
- * Carrega el mapa i busca els nodes que estan actius
- *
- */
-function openStreetMap(){
     //Implementació del mapa:
     var map = L.map('map').setView([41.119, 1.24], 14);
 
@@ -71,23 +40,13 @@ function openStreetMap(){
         accessToken: 'pk.eyJ1Ijoib3Jpb2x1cnYiLCJhIjoiY2t3b253bm9yMDRucDJ3cDNqbXg2eWNtcSJ9.gWCbds27X0VohTx2hbrH6A'
     }).addTo(map);
 
-    //Coordenades campus sescelades
-    var marker = L.marker([41.131587, 1.241852]).addTo(map);
-    marker.bindPopup("<b>ACTUA HQ</b><br>Campus sescelades").openPopup();
 
+    //Implementacio mapa segons estats
+    var len =  Object.keys(estat).length;
 
-    //Conseguim els estats
-    var urlEstats = document.URL + 'estat';
-    json = $.getJSON(urlEstats,function (urlEstats){
-        var length, hora, data;
-        length = Object.keys(urlEstats).length;
-
-        console.log(length);
-        hora = urlEstats['Hora'];
-        urlEstats['Hora'] = 'patata';
-        console.log(urlEstats);
-        console.log(hora)
-        data = urlEstats['Data']
+    for (let i = 0; i<len; i++){
+        let hora = estat[i]['Hora'];
+        let data = estat[i]['Data'];
         var hora_estat = data + ' ' + hora;
         var hora_comparat = new Date(hora_estat);
         console.log(hora_comparat);
@@ -104,40 +63,27 @@ function openStreetMap(){
             color = '#ff0000'
             //El dispositiu no està actiu
         }
-        //Cercle en un mapa:
-        var circle = L.circle([41.119722, 1.260556], {
+        var circle = L.circle([estat[i]['Lat'], estat[i]['Lon']], {
             color: color,
             fillColor: color,
             fillOpacity: 1,
             radius: 40
         }).addTo(map);
-        circle.bindPopup("<b>Rectorat URV</b><br>Tarragona").openPopup();
+        circle.bindPopup("<b>estat[i]['Nom']</b><br>Tarragona").openPopup();
+    }
 
-    });
-
+});
 
 };
 
-/**
- * Retorna un numero enter entre el minim i el màxim indicat.
- * @param min
- * @param max
- * @returns {*}
- */
-function getRandomInt(min, max) {
-    return Math.floor(Math.random() * (max - min)) + min;
-}
 
 
-/**
- * Funció per a consultar la base de dades entrant algun tipus de paràmetre
- */
-function consultaBaseDades(){
 
-    // https://luisjordan.net/node-js/conectar-a-base-de-datos-con-node-js/
-    // S'han de fer funcions de busqueda
-    //TODO
-    //
 
-}
+
+
+
+
+
+
 
