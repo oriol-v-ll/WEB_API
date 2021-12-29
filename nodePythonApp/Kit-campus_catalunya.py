@@ -1,5 +1,4 @@
-#Programa per a guardar la temperatura del lab. MAX MIN I AVERAGE
-#Codi d'exemple DHT22 + Oriol Villanova
+#Programa desenvolupat per el TFG
 
 
 #Llibreries necessaries
@@ -7,7 +6,19 @@ import requests
 import time
 import json
 from datetime import datetime
+import os
+from hashlib import md5
+import base64
+from Crypto.Cipher import AES
+import pythonencrypt as pe
 
+
+'''
+Funcions necessàries per encriptar la informacio
+'''
+BLOCK_SIZE = 16
+#key = 'My Super Secret Password'
+key = 'TFG'
 
 def enviarDades (url, dades):
     print("Enviant dades al servidor...")
@@ -36,16 +47,31 @@ def enviarEstat(url, nom):
     hoy_str = hoy.strftime('%Y/%m/%d')
     hora_str = hora_act.strftime('%H:%M:%S')
     print (url)
- 
+
+
     enviar_estat=({
-            'Lat': '41.119722', 
-            'Lon': '1.260556',
+            'Lat': '41.12279063845763',
+            'Lon': '1.2517030153866617',
             'Data': hoy_str,
             'Hora': hora_str,
             'Nom' : nom
                 })
-    print (enviar_estat)
-    respuesta = requests.post(url, json=enviar_estat)
+
+    with open('data.json', 'w') as file:
+        json.dump(enviar_estat, file, indent=4)
+
+    with open('data.json','rb') as f:
+        info = f.read()
+
+    output = pe._encrypt(key,info.decode('utf-8'))
+    print('\nPython encrypt:\n', output)
+
+    decrypt = pe._decrypt(key,output)
+    print('\nPython decrypt:\n', decrypt)
+
+
+    myobj = {'ESTAT': output}
+    respuesta = requests.post(url, json=myobj)
     print(respuesta)
 
 
@@ -57,10 +83,10 @@ def actualitzarEstat(url, nom):
     hoy_str = hoy.strftime('%Y-%m-%d')
     hora_str = hora_act.strftime('%H:%M:%S')
     print (url)
- 
+
     enviar_estat=({
-            'Lat': '41.119722', 
-            'Lon': '1.260556',
+            'Lat': '41.12279063845763',
+            'Lon': '1.2517030153866617',
             'Data': hoy_str,
             'Hora': hora_str,
             'Nom' : nom
@@ -73,14 +99,14 @@ if __name__ == '__main__':
     #Variables constants
     URL = "http://192.168.1.79:3000/api/enviar"
     URL_ESTAT = "http://192.168.1.79:3000/api/up"
-    URL_SETUP = "http://192.168.1.79:3000/api/setup"
-    NOM = "Kit_Rectorat"
-    
+    URL_SETUP = "http://192.168.1.79:3000/api/setup/encriptat"
+    NOM = "Kit Campus Catalunya"
+
     enviarEstat(URL_SETUP, NOM)
     data=[]
     #Cos del programa per a fer les funcions necessaries:
     while True:
-        
+
         try:
             #Variables que s'han d'inicialitzar cada vegada:
             hora_act = datetime.now().time()
@@ -89,7 +115,7 @@ if __name__ == '__main__':
             humidity = 56
             hoy_str = hoy.strftime('%d/%m/%Y')
             hora_str = hora_act.strftime('%H:%M:%S')
-    
+
             enviar_api=({
                 'Temperatura': temperature_c,
                 'Humitat': humidity,
@@ -99,8 +125,8 @@ if __name__ == '__main__':
             enviarUnaInstancia(URL, enviar_api)
 
             actualitzarEstat(URL_ESTAT, NOM)
-      
-            
+
+
         except RuntimeError as error:
             # Errors happen fairly often, DHT's are hard to read, just keep going
             print(error.args[0])
