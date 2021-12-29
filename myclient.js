@@ -43,7 +43,7 @@ json = $.getJSON(url_estat,function (estat){
 
     //Implementacio mapa segons estats
     var len =  Object.keys(estat).length;
-
+    console.log(len)
     for (let i = 0; i<len; i++){
         let hora = estat[i]['Hora'];
         let data = estat[i]['Data'];
@@ -63,13 +63,14 @@ json = $.getJSON(url_estat,function (estat){
             color = '#ff0000'
             //El dispositiu no està actiu
         }
+        console.log(estat[i]['Lat'])
         var circle = L.circle([estat[i]['Lat'], estat[i]['Lon']], {
             color: color,
             fillColor: color,
             fillOpacity: 1,
             radius: 40
         }).addTo(map);
-        circle.bindPopup("<b>estat[i]['Nom']</b><br>Tarragona").openPopup();
+        circle.bindPopup("<b>"+estat[i]['Nom']+"</b><br>Tarragona").openPopup();
     }
 
 });
