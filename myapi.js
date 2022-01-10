@@ -15,43 +15,12 @@ app.use(express.json());
 var inputs = require('./data.json');
 var estat = require('./estat.json');
 
-
-
 var password = 'TFG1234567891234';
 
 
 app.use(express['static'](__dirname));
 
-var nodev = process.version.match(/^v(\d+)\.(\d+)/);
-function decrypt (key,value) {
-    aes.setAutoPadding(false);
-    // Convert urlsafe base64 to normal base64
-    var value = value.replace(/\-/g, '+').replace(/_/g, '/');
 
-    // Convert from base64 to binary string
-    var edata = new Buffer.from(value, 'base64').toString('binary')
-
-    // Create key from key
-    var m = crypto.createHash('md5').update(key)
-    var key = m.digest('hex');
-
-    m = crypto.createHash('md5').update(key + key)
-    var iv = m.digest('hex').slice(0,16);
-
-    try{
-        var decipher = crypto.createDecipheriv('aes-256-cbc', key, iv);
-        decipher.setAutoPadding(false);
-
-        var decrypted = decipher.update(edata, 'binary') + decipher.final('binary');
-        var textval = new Buffer.from(decrypted, 'binary').toString('utf8');
-
-
-        return textval.slice(16)
-    }
-
-    catch (err){console.log('DECRYPT ERROR:',err.code,)}
-
-};
 
 
 app.use(express.json({extended: false})); //This is the line that you want to add

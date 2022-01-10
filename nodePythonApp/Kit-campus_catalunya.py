@@ -97,9 +97,9 @@ def actualitzarEstat(url, nom):
 
 if __name__ == '__main__':
     #Variables constants
-    URL = "http://192.168.1.79:3000/api/enviar"
-    URL_ESTAT = "http://192.168.1.79:3000/api/up"
-    URL_SETUP = "http://192.168.1.79:3000/api/setup/encriptat"
+    URL = "http://localhost:3000/api/enviar"
+    URL_ESTAT = "http://localhost:3000/api/up"
+    URL_SETUP = "http://localhost:3000/api/setup/encriptat"
     NOM = "Kit Campus Catalunya"
 
     enviarEstat(URL_SETUP, NOM)
